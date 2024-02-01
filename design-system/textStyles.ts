@@ -9,15 +9,34 @@ const textStylesGeneral = {
 const textStyles: ChakraTheme["textStyles"] = {
   display: {
     ...textStylesGeneral,
-    fontSize: ["4xl", "5xl", "6xl"],
+    fontSize: "32px",
   },
+
   title: {
     ...textStylesGeneral,
-    fontSize: ["xl", "2xl", "3xl"],
+    fontSize: "24px",
   },
+
   label: {
     ...textStylesGeneral,
     lineHeight: "base",
+    fontWeight: "semibold",
+  },
+
+  label2: {
+    ...textStylesGeneral,
+    fontSize: "14px",
+    fontWeight: "semibold",
+  },
+
+  body: {
+    ...textStylesGeneral,
+    fontSize: "16px",
+  },
+  body2: {
+    ...textStylesGeneral,
+    fontSize: "14px",
+    fontWeight: "regular",
   },
 };
 
