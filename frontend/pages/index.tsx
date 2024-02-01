@@ -20,9 +20,7 @@ const TransactionsPage: React.FC = () => {
           <Text textStyle="title">Transactions</Text>
         </Flex>
 
-        <Box bg="white" borderRadius="12px" p="16px" boxShadow="sm" w="full">
-          <TransactionsList transactions={mockTransactions} />
-        </Box>
+        <TransactionsList transactions={mockTransactions} />
 
         <Flex justify="center" align="center" mt="12px">
           <PaginationComponent

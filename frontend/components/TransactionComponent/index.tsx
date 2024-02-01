@@ -251,7 +251,7 @@ export const TransactionsList: React.FC<TransactionsListProps> = ({
   }, [transactions]);
 
   return (
-    <VStack w="full" align="stretch" spacing={0}>
+    <VStack w="full" align="stretch" spacing={6}>
       {formattedTransactions &&
         Object.keys(formattedTransactions).map((date, index) => {
           const transactionsList = formattedTransactions[date].transactions;
@@ -261,9 +261,10 @@ export const TransactionsList: React.FC<TransactionsListProps> = ({
             <Box
               key={`transaction-date-${date}`}
               w="full"
-              paddingBottom={8}
-              borderTopWidth="thin"
-              borderTopColor={index === 0 ? "transparent" : "outline"}
+              // TODO: Change this to in the design system (surface)
+              backgroundColor="white"
+              borderRadius="xl"
+              padding={4}
             >
               <HStack justifyContent="space-between" p={3}>
                 <Text
