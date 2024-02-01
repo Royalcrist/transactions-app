@@ -1,13 +1,15 @@
+import { Iconoir } from "iconoir-react";
+
 export interface User {
   id: number;
-  avatar: string;
   name: string;
 }
+export type IconName = keyof typeof Iconoir;
 
 export interface Category {
-  id: number;
   name: string;
-  icon: string;
+  displayName: string;
+  iconName: IconName;
 }
 
 export interface Card {
@@ -16,19 +18,19 @@ export interface Card {
   cardType: string;
   expirationDate: string;
   cvv: string;
-  user: User;
 }
 
 export interface Transaction {
   id: number;
-  date: string;
   reference: string;
-  status: string;
-  merchantDetails: string;
+  status: "Pending" | "Completed" | "Failed";
+  merchantName: string;
   amount: string;
   currency: string;
   balance: string;
   category: Category;
   user: User;
+  createdAt: string;
+  updatedAt: string;
   card?: Card;
 }

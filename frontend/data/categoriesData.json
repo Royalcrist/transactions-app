@@ -1,0 +1,52 @@
+[
+  {
+    "name": "food",
+    "displayName": "Food",
+    "iconName": "Cart"
+  },
+  {
+    "name": "transportation",
+    "displayName": "Transportation",
+    "iconName": "Car"
+  },
+  {
+    "name": "housing",
+    "displayName": "Housing",
+    "iconName": "HomeAlt"
+  },
+  {
+    "name": "health",
+    "displayName": "Health",
+    "iconName": "HealthShield"
+  },
+  {
+    "name": "leisure",
+    "displayName": "Leisure",
+    "iconName": "Basketball"
+  },
+  {
+    "name": "education",
+    "displayName": "Education",
+    "iconName": "Book"
+  },
+  {
+    "name": "apparel",
+    "displayName": "Apparel",
+    "iconName": "Hanger"
+  },
+  {
+    "name": "income",
+    "displayName": "Income",
+    "iconName": "MoneySquare"
+  },
+  {
+    "name": "savings",
+    "displayName": "Savings",
+    "iconName": "Safe"
+  },
+  {
+    "name": "otherExpenses",
+    "displayName": "Other Expenses",
+    "iconName": "Calculator"
+  }
+]

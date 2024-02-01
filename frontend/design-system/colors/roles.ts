@@ -93,7 +93,7 @@ const roles = {
   },
   onfield: onBackground,
   overlay: getColor("gray", 20),
-  outline: onBackground,
+  outline: getColor("gray", 90),
   shadow: {
     _dark: getColor("gray", 100, 0.05),
     default: getColor("gray", 0, 0.05),

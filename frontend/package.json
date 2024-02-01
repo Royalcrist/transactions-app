@@ -16,6 +16,7 @@
     "@types/react": "18.0.33",
     "@types/react-dom": "18.0.11",
     "dayjs": "^1.11.10",
+    "dinero.js": "^1.9.1",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "framer-motion": "^10.11.2",
@@ -26,5 +27,8 @@
     "react-dom": "18.2.0",
     "react-native-svg": "^14.1.0",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/dinero.js": "^1.9.4"
   }
 }
