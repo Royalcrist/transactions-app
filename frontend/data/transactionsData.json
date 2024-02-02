@@ -1,0 +1,222 @@
+{
+  "currentPage": 1,
+  "pageSize": 10,
+  "totalPages": 5,
+  "totalItems": 50,
+  "transactions": [
+    {
+      "id": 110,
+      "createdAt": "2024-01-19T10:30:00Z",
+      "updatedAt": "2024-01-19T11:30:00Z",
+      "reference": "Annual subscription to TechInsights",
+      "status": "Completed",
+      "merchantName": "Subscription Service",
+      "amount": "-200.00",
+      "currency": "USD",
+      "balance": "1800.00",
+      "category": {
+        "name": "education",
+        "displayName": "Education",
+        "iconName": "Book"
+      },
+      "user": {
+        "id": 10,
+        "name": "Olivia Smith"
+      },
+      "card": {
+        "id": 15,
+        "cardNumber": "5678901234567890",
+        "cardType": "Credit",
+        "expirationDate": "08/2027",
+        "cvv": "890"
+      }
+    },
+    {
+      "id": 109,
+      "createdAt": "2024-01-19T09:15:00Z",
+      "updatedAt": "2024-01-19T09:45:00Z",
+      "reference": "Laptop purchase at Global Electronics",
+      "status": "Completed",
+      "merchantName": "Electronics Store",
+      "amount": "-1200.00",
+      "currency": "USD",
+      "balance": "2000.00",
+      "category": {
+        "name": "education",
+        "displayName": "Education",
+        "iconName": "Book"
+      },
+      "user": {
+        "id": 9,
+        "name": "Ethan Johnson"
+      },
+      "card": {
+        "id": 14,
+        "cardNumber": "4567890123456789",
+        "cardType": "Debit",
+        "expirationDate": "09/2026",
+        "cvv": "567"
+      }
+    },
+    {
+      "id": 108,
+      "createdAt": "2024-01-18T15:00:00Z",
+      "updatedAt": "2024-01-18T15:30:00Z",
+      "reference": "Office furniture for new home office",
+      "status": "Completed",
+      "merchantName": "Furniture Store",
+      "amount": "-700.00",
+      "currency": "USD",
+      "balance": "3200.00",
+      "category": {
+        "name": "housing",
+        "displayName": "Housing",
+        "iconName": "HomeAlt"
+      },
+      "user": {
+        "id": 8,
+        "name": "Mia Williams"
+      }
+    },
+    {
+      "id": 107,
+      "createdAt": "2024-01-18T14:20:00Z",
+      "updatedAt": "2024-01-18T14:50:00Z",
+      "reference": "Professional photography equipment",
+      "status": "Pending",
+      "merchantName": "Camera Store",
+      "amount": "-1500.00",
+      "currency": "USD",
+      "balance": "3900.00",
+      "category": {
+        "name": "leisure",
+        "displayName": "Leisure",
+        "iconName": "Basketball"
+      },
+      "user": {
+        "id": 7,
+        "name": "Noah Brown"
+      }
+    },
+    {
+      "id": 106,
+      "createdAt": "2024-01-18T13:45:00Z",
+      "updatedAt": "2024-01-18T14:10:00Z",
+      "reference": "Custom-built PC from TechWorld",
+      "status": "Completed",
+      "merchantName": "Computer Store",
+      "amount": "-800.00",
+      "currency": "USD",
+      "balance": "5400.00",
+      "category": {
+        "name": "education",
+        "displayName": "Education",
+        "iconName": "Book"
+      },
+      "user": {
+        "id": 6,
+        "name": "Ava Jones"
+      }
+    },
+    {
+      "id": 105,
+      "createdAt": "2024-01-17T17:30:00Z",
+      "updatedAt": "2024-01-17T18:00:00Z",
+      "reference": "PlayStation 5 purchase at Electronics World",
+      "status": "Failed",
+      "merchantName": "Electronics Store",
+      "amount": "-500.00",
+      "currency": "USD",
+      "balance": "6200.00",
+      "category": {
+        "name": "leisure",
+        "displayName": "Leisure",
+        "iconName": "Basketball"
+      },
+      "user": {
+        "id": 5,
+        "name": "Eve Martin"
+      }
+    },
+    {
+      "id": 104,
+      "createdAt": "2024-01-17T16:05:00Z",
+      "updatedAt": "2024-01-17T16:35:00Z",
+      "reference": "Dinner at Luigi's Italian",
+      "status": "Completed",
+      "merchantName": "Restaurant",
+      "amount": "-120.00",
+      "currency": "USD",
+      "balance": "6700.00",
+      "category": {
+        "name": "food",
+        "displayName": "Food",
+        "iconName": "Cart"
+      },
+      "user": {
+        "id": 4,
+        "name": "Cathy Green"
+      }
+    },
+    {
+      "id": 103,
+      "createdAt": "2024-01-17T11:00:00Z",
+      "updatedAt": "2024-01-17T11:30:00Z",
+      "reference": "Refill at Green Energy Fuel Station",
+      "status": "Completed",
+      "merchantName": "Gas Station",
+      "amount": "75.00",
+      "currency": "USD",
+      "balance": "6820.00",
+      "category": {
+        "name": "transportation",
+        "displayName": "Transportation",
+        "iconName": "Car"
+      },
+      "user": {
+        "id": 3,
+        "name": "Bob Smith"
+      }
+    },
+    {
+      "id": 102,
+      "createdAt": "2024-01-16T10:20:00Z",
+      "updatedAt": "2024-01-16T10:50:00Z",
+      "reference": "Winter clothing haul at Fashionista Online",
+      "status": "Pending",
+      "merchantName": "Online Store",
+      "amount": "-300.00",
+      "currency": "USD",
+      "balance": "6745.00",
+      "category": {
+        "name": "apparel",
+        "displayName": "Apparel",
+        "iconName": "PantsPockets"
+      },
+      "user": {
+        "id": 2,
+        "name": "Alice Johnson"
+      }
+    },
+    {
+      "id": 101,
+      "createdAt": "2024-01-16T09:00:00Z",
+      "updatedAt": "2024-01-16T09:30:00Z",
+      "reference": "Groceries for the week at FreshMart",
+      "status": "Completed",
+      "merchantName": "Supermarket",
+      "amount": "-150.00",
+      "currency": "USD",
+      "balance": "7045.00",
+      "category": {
+        "name": "food",
+        "displayName": "Food",
+        "iconName": "Cart"
+      },
+      "user": {
+        "id": 1,
+        "name": "John Doe"
+      }
+    }
+  ]
+}
