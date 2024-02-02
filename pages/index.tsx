@@ -12,6 +12,7 @@
  * 10. Documentations
  * 11. Add tests (unit at least for the hooks)
  * 12. Create the function to download the transaction
+ * 13. Animations for the amounts
  */
 
 import TransactionsList from "@/components/TransactionsList";
