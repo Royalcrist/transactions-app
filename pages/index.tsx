@@ -9,8 +9,9 @@
  * 7. Button of sort by
  * 8. Add optimizations (VirtualizedList, cache, etc.)
  * 9. Clean up the code
- * 10. Add tests (unit at least for the hooks)
- * 11. Create the function to download the transaction
+ * 10. Documentations
+ * 11. Add tests (unit at least for the hooks)
+ * 12. Create the function to download the transaction
  */
 
 import TransactionsList from "@/components/TransactionsList";
