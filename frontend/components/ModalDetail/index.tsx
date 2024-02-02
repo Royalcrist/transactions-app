@@ -3,6 +3,7 @@ import {
   Flex,
   Grid,
   GridItem,
+  Icon,
   IconButton,
   Modal,
   ModalBody,
@@ -11,7 +12,7 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import { Download } from "iconoir-react";
+import { Download, MastercardCard } from "iconoir-react";
 import dayjs from "dayjs";
 import { UITransaction } from "../TransactionComponent";
 import IconoirIconProvider from "../IconoirIconProvider";
@@ -28,98 +29,101 @@ const ModalDetail: React.FC<ModalDetailProps> = ({
   transaction,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
-      <ModalOverlay />
-      <ModalContent>
-        <ModalCloseButton />
-        <ModalBody background="#F4F4F5" borderRadius="md" p={8}>
-          <Flex direction="column" gap={4}>
-            <Flex direction="column" gap={3}>
-              <Text
-                textStyle="title"
-                color={
-                  transaction.amount.getAmount() >= 0 ? "#3E9C42" : "#9A1111"
-                }
-              >
-                {transaction.amount.toFormat()}
-              </Text>
-              <Text textStyle="label">{transaction.merchantName}</Text>
-              <Text textStyle="body2" opacity="50%">
-                {dayjs
-                  .utc(transaction.createdAt)
-                  .local()
-                  .format("dddd, HH:mmA")}
-              </Text>
-            </Flex>
+    console.log("Card Number:", transaction.card?.cardNumber),
+    (
+      <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+        <ModalOverlay bg="rgba(0, 0, 0, 0.7)" />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody background="#F4F4F5" borderRadius="lg" p={8}>
+            <Flex direction="column" gap={4}>
+              <Flex direction="column" gap={3}>
+                <Text
+                  textStyle="title"
+                  color={
+                    transaction.amount.getAmount() >= 0 ? "#3E9C42" : "#9A1111"
+                  }
+                >
+                  {transaction.amount.toFormat()}
+                </Text>
+                <Text textStyle="label">{transaction.merchantName}</Text>
+                <Text textStyle="body2" opacity="50%">
+                  {dayjs
+                    .utc(transaction.createdAt)
+                    .local()
+                    .format("dddd, HH:mmA")}
+                </Text>
+              </Flex>
 
-            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-              <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
-                <Flex direction="column" gap={3}>
-                  <Flex justifyContent="space-between" gap={3}>
-                    <Text opacity="50%">Transaction ID:</Text>
-                    <Text>{transaction.id}</Text>
-                  </Flex>
-                  <Flex justifyContent="space-between">
-                    <Text opacity="50%">Reference:</Text>
-                    <Text noOfLines={1}>{transaction.reference}</Text>
-                  </Flex>
-                  <Flex justifyContent="space-between">
-                    <Text opacity="50%">Category:</Text>
-                    <Flex alignItems="center">
-                      <Flex
-                        boxSize={8}
-                        borderWidth="1px"
-                        borderColor="outline"
-                        borderRadius="md"
-                        align="center"
-                        justify="center"
-                      >
+              <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+                <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
+                  <Flex direction="column" gap={3}>
+                    <Flex justifyContent="space-between" gap={3}>
+                      <Text opacity="50%">Transaction ID:</Text>
+                      <Text>{transaction.id}</Text>
+                    </Flex>
+                    <Flex justifyContent="space-between">
+                      <Text opacity="50%">Reference:</Text>
+                      <Text maxW={312} noOfLines={1}>
+                        {transaction.reference}
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between">
+                      <Text opacity="50%">Category:</Text>
+                      <Flex alignItems="center" gap={2}>
                         <IconoirIconProvider
                           icon={transaction.category.iconName}
                         />
+                        <Text>{transaction.category.name}</Text>
                       </Flex>
-                      <Text ml={2}>{transaction.category.name}</Text>
                     </Flex>
                   </Flex>
-                </Flex>
-              </GridItem>
+                </GridItem>
+                <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
+                  <Flex direction="column" gap={3}>
+                    <Flex justifyContent="space-between">
+                      <Text opacity="50%">Status:</Text>
+                      <Text>{transaction.status}</Text>
+                    </Flex>
+                    {transaction.card?.cardNumber && (
+                      <Flex justifyContent="space-between">
+                        <Text opacity="50%">Card:</Text>
+                        <Flex gap={2} align="center">
+                          <Icon as={MastercardCard} />
+                          <Text>
+                            {transaction.card.cardNumber.slice(0, 2) +
+                              "••••••••" +
+                              transaction.card.cardNumber.slice(-4)}
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    )}
 
-              <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
-                <Flex direction="column" gap={3}>
-                  <Flex justifyContent="space-between">
-                    <Text opacity="50%">Status:</Text>
-                    <Text>{transaction.status}</Text>
+                    <Flex justifyContent="space-between">
+                      <Text opacity="50%">Balance:</Text>
+                      <Text>{transaction.balance}</Text>
+                    </Flex>
                   </Flex>
-                  <Flex justifyContent="space-between">
-                    <Text opacity="50%">Card:</Text>
-                    <Text fontWeight="bold">
-                      {transaction.card?.cardNumber}
-                    </Text>
-                  </Flex>
-                  <Flex justifyContent="space-between">
-                    <Text opacity="50%">Balance:</Text>
-                    <Text>{transaction.balance}</Text>
-                  </Flex>
-                </Flex>
-              </GridItem>
+                </GridItem>
 
-              <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
-                <Flex direction="column" gap={3}>
-                  <Flex justifyContent="space-between">
-                    <Text opacity="50%">Download</Text>
-                    <IconButton
-                      aria-label="Download"
-                      icon={<Download />}
-                      variant="tertiary"
-                    />
+                <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
+                  <Flex direction="column" gap={3}>
+                    <Flex justifyContent="space-between">
+                      <Text opacity="50%">Download</Text>
+                      <IconButton
+                        aria-label="Download"
+                        icon={<Download />}
+                        variant="tertiary"
+                      />
+                    </Flex>
                   </Flex>
-                </Flex>
-              </GridItem>
-            </Grid>
-          </Flex>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+                </GridItem>
+              </Grid>
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    )
   );
 };
 

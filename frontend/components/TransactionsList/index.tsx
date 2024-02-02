@@ -53,7 +53,7 @@ export const TransactionsList: React.FC<TransactionsListProps> = ({
   }, [transactions]);
 
   return (
-    <VStack w="full" align="stretch" spacing={6}>
+    <VStack w="full" align="stretch" gap={6}>
       {formattedTransactions &&
         Object.keys(formattedTransactions).map((date, index) => {
           const transactionsList = formattedTransactions[date].transactions;
@@ -69,11 +69,7 @@ export const TransactionsList: React.FC<TransactionsListProps> = ({
               padding={4}
             >
               <HStack justifyContent="space-between" p={3}>
-                <Text
-                  textStyle="label2"
-                  opacity="50%"
-                  marginTop={index === 0 ? "0px" : "16px"}
-                >
+                <Text textStyle="label2" opacity="50%">
                   {dayjs(date).format("dddd, D/MM/YYYY")}
                 </Text>
                 <Text

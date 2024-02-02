@@ -57,7 +57,7 @@ const PaginationComponent: React.FC<PaginationProps> = ({
           size={"sm"}
           key={page}
           onClick={() => onPageChange(page)}
-          variant={page === currentPage ? "solid" : "tertiary"}
+          variant="tertiary"
         >
           {page}
         </Button>

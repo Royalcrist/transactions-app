@@ -33,7 +33,6 @@ const TransactionComponent: React.FC<TransactionProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    // TODO: Change this to a Grid
     <>
       <Box
         as="button"
@@ -51,6 +50,7 @@ const TransactionComponent: React.FC<TransactionProps> = ({
           borderBottomWidth={isLast ? "0px" : "1px"}
           borderColor="outline"
           p={3}
+          alignItems={"center"}
         >
           <GridItem gridArea="time">
             <Text>
@@ -73,11 +73,16 @@ const TransactionComponent: React.FC<TransactionProps> = ({
                 align="center"
                 justify="center"
               >
-                <IconoirIconProvider icon={transaction.category.iconName} />
+                <IconoirIconProvider
+                  icon={transaction.category.iconName}
+                  boxSize={4}
+                />
               </Flex>
 
               <VStack align="start" spacing={0}>
-                <Text noOfLines={1}>{transaction.reference}</Text>
+                <Text maxW={240} noOfLines={1}>
+                  {transaction.reference}
+                </Text>
                 <Text textStyle="body2" opacity="50%" noOfLines={1}>
                   {transaction.merchantName}
                 </Text>
