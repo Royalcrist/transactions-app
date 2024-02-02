@@ -1,10 +1,8 @@
-// ModalDetail.tsx
 import React from "react";
 import {
-  Box,
   Flex,
-  HStack,
-  Icon,
+  Grid,
+  GridItem,
   IconButton,
   Modal,
   ModalBody,
@@ -12,9 +10,8 @@ import {
   ModalContent,
   ModalOverlay,
   Text,
-  VStack,
 } from "@chakra-ui/react";
-import { ArrowRight, CartAlt, Download } from "iconoir-react";
+import { Download } from "iconoir-react";
 import dayjs from "dayjs";
 import { UITransaction } from "../TransactionComponent";
 import IconoirIconProvider from "../IconoirIconProvider";
@@ -31,87 +28,95 @@ const ModalDetail: React.FC<ModalDetailProps> = ({
   transaction,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
-        <ModalBody background="#F4F4F5" borderRadius={5} padding={8}>
-          <Text
-            marginTop={4}
-            textStyle="title"
-            color={transaction.amount.getAmount() >= 0 ? "#3E9C42" : "#9A1111"}
-          >
-            {transaction.amount.toFormat()}
-          </Text>
-          <Text textStyle="label">{transaction.merchantName}</Text>
+        <ModalBody background="#F4F4F5" borderRadius="md" p={8}>
+          <Flex direction="column" gap={4}>
+            <Flex direction="column" gap={3}>
+              <Text
+                textStyle="title"
+                color={
+                  transaction.amount.getAmount() >= 0 ? "#3E9C42" : "#9A1111"
+                }
+              >
+                {transaction.amount.toFormat()}
+              </Text>
+              <Text textStyle="label">{transaction.merchantName}</Text>
+              <Text textStyle="body2" opacity="50%">
+                {dayjs
+                  .utc(transaction.createdAt)
+                  .local()
+                  .format("dddd, HH:mmA")}
+              </Text>
+            </Flex>
 
-          <Text textStyle="body2" opacity="50%">
-            {dayjs.utc(transaction.createdAt).local().format("dddd, HH:mmA")}
-          </Text>
-
-          <Box background="#fff" borderRadius="md" padding={6} marginTop={4}>
-            <VStack spacing={3}>
-              <Flex justify="space-between" align="center" w="full">
-                <Text opacity="50%">Transaction ID:</Text>
-                <Text fontWeight="bold">{transaction.id}</Text>
-              </Flex>
-
-              <Flex justify="space-between" align="center" w="full">
-                <Text opacity="50%">Reference:</Text>
-                <Text fontWeight="bold">{transaction.reference}</Text>
-              </Flex>
-
-              <Flex justify="space-between" align="center" w="full">
-                <Text opacity="50%">Category:</Text>
-                <HStack spacing={2}>
-                  <Flex
-                    boxSize={8}
-                    borderWidth="1px"
-                    borderColor="outline"
-                    borderRadius="md"
-                    align="center"
-                    justify="center"
-                  >
-                    <IconoirIconProvider icon={transaction.category.iconName} />
+            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+              <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
+                <Flex direction="column" gap={3}>
+                  <Flex justifyContent="space-between" gap={3}>
+                    <Text opacity="50%">Transaction ID:</Text>
+                    <Text>{transaction.id}</Text>
                   </Flex>
-                  <Text fontWeight="bold">{transaction.category.name}</Text>
-                </HStack>
-              </Flex>
-            </VStack>
-          </Box>
+                  <Flex justifyContent="space-between">
+                    <Text opacity="50%">Reference:</Text>
+                    <Text noOfLines={1}>{transaction.reference}</Text>
+                  </Flex>
+                  <Flex justifyContent="space-between">
+                    <Text opacity="50%">Category:</Text>
+                    <Flex alignItems="center">
+                      <Flex
+                        boxSize={8}
+                        borderWidth="1px"
+                        borderColor="outline"
+                        borderRadius="md"
+                        align="center"
+                        justify="center"
+                      >
+                        <IconoirIconProvider
+                          icon={transaction.category.iconName}
+                        />
+                      </Flex>
+                      <Text ml={2}>{transaction.category.name}</Text>
+                    </Flex>
+                  </Flex>
+                </Flex>
+              </GridItem>
 
-          <Box
-            background="#fff"
-            borderRadius="20px"
-            padding="24px"
-            marginTop="16px"
-          >
-            <Flex justify="space-between" align="center" mb={2}>
-              <Text opacity="50%">Status:</Text>
-              <Text fontWeight="bold">{transaction.status}</Text>
-            </Flex>
+              <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
+                <Flex direction="column" gap={3}>
+                  <Flex justifyContent="space-between">
+                    <Text opacity="50%">Status:</Text>
+                    <Text>{transaction.status}</Text>
+                  </Flex>
+                  <Flex justifyContent="space-between">
+                    <Text opacity="50%">Card:</Text>
+                    <Text fontWeight="bold">
+                      {transaction.card?.cardNumber}
+                    </Text>
+                  </Flex>
+                  <Flex justifyContent="space-between">
+                    <Text opacity="50%">Balance:</Text>
+                    <Text>{transaction.balance}</Text>
+                  </Flex>
+                </Flex>
+              </GridItem>
 
-            <Flex justify="space-between" align="center" mb={2}>
-              <Text opacity="50%">Card:</Text>
-              <Text fontWeight="bold">{transaction.card?.cardNumber}</Text>
-            </Flex>
-          </Box>
-
-          <Box
-            background="#fff"
-            borderRadius="20px"
-            padding="24px"
-            marginTop="16px"
-          >
-            <Flex justify="space-between" align="center" mb={2}>
-              <Text opacity="50%">Download </Text>
-              <IconButton
-                aria-label="Details"
-                icon={<Icon as={Download} />}
-                variant="tertiary"
-              />
-            </Flex>
-          </Box>
+              <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
+                <Flex direction="column" gap={3}>
+                  <Flex justifyContent="space-between">
+                    <Text opacity="50%">Download</Text>
+                    <IconButton
+                      aria-label="Download"
+                      icon={<Download />}
+                      variant="tertiary"
+                    />
+                  </Flex>
+                </Flex>
+              </GridItem>
+            </Grid>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>
