@@ -6,18 +6,18 @@ import {
   Icon,
   Grid,
   GridItem,
-  Button,
   Box,
 } from "@chakra-ui/react";
 import { Transaction } from "@/interfaces";
-import { ArrowRight, CartAlt, Download } from "iconoir-react";
+import { ArrowRight } from "iconoir-react";
 import dayjs from "dayjs";
 import { useDisclosure } from "@chakra-ui/react";
-import Dinero, { Dinero as IDinero } from "dinero.js";
+import { Dinero as IDinero } from "dinero.js";
 import IconoirIconProvider from "../IconoirIconProvider";
 import ModalDetail from "../ModalDetail";
 
-export interface UITransaction extends Omit<Transaction, "amount"> {
+export interface UITransaction extends Omit<Transaction, "amount" | "balance"> {
+  balance: IDinero;
   amount: IDinero;
 }
 
@@ -33,6 +33,7 @@ const TransactionComponent: React.FC<TransactionProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
+    // TODO: Hover effect
     <>
       <Box
         as="button"

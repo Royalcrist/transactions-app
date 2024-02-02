@@ -27,6 +27,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.0",
     "@types/dinero.js": "^1.9.4"
   }
 }

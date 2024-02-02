@@ -40,6 +40,10 @@ export const TransactionsList: React.FC<TransactionsListProps> = ({
           amount: parseInt(transaction.amount) * 100,
           currency: transaction.currency as Currency,
         }),
+        balance: Dinero({
+          amount: parseInt(transaction.balance) * 100,
+          currency: transaction.currency as Currency,
+        }),
       });
       acc[date].balance = acc[date].balance.add(
         Dinero({

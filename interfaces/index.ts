@@ -7,7 +7,17 @@ export interface User {
 export type IconName = keyof typeof Iconoir;
 
 export interface Category {
-  name: string;
+  name:
+    | "food"
+    | "transportation"
+    | "housing"
+    | "health"
+    | "leisure"
+    | "education"
+    | "apparel"
+    | "income"
+    | "savings"
+    | "other";
   displayName: string;
   iconName: IconName;
 }
