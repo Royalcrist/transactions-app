@@ -1,10 +1,6 @@
 import React from "react";
 import {
   Flex,
-  Grid,
-  GridItem,
-  Icon,
-  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -16,6 +12,7 @@ import { Download, MastercardCard } from "iconoir-react";
 import dayjs from "dayjs";
 import { UITransaction } from "../TransactionComponent";
 import IconoirIconProvider from "../IconoirIconProvider";
+import DetailGrid from "../DetailGrid";
 
 interface ModalDetailProps {
   isOpen: boolean;
@@ -53,68 +50,56 @@ const ModalDetail: React.FC<ModalDetailProps> = ({
               </Text>
             </Flex>
 
-            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-              <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
-                <Flex direction="column" gap={3}>
-                  <Flex justifyContent="space-between" gap={3}>
-                    <Text opacity="50%">Transaction ID:</Text>
-                    <Text>{transaction.id}</Text>
-                  </Flex>
-                  <Flex justifyContent="space-between" gap={8}>
-                    <Text opacity="50%">Reference:</Text>
-                    <Text maxW="50ch">{transaction.reference}</Text>
-                  </Flex>
-                  <Flex justifyContent="space-between">
-                    <Text opacity="50%">Category:</Text>
-                    <Flex alignItems="center" gap={2}>
-                      <IconoirIconProvider
-                        icon={transaction.category.iconName}
-                      />
-                      <Text>{transaction.category.name}</Text>
-                    </Flex>
-                  </Flex>
-                </Flex>
-              </GridItem>
-              <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
-                <Flex direction="column" gap={3}>
-                  <Flex justifyContent="space-between">
-                    <Text opacity="50%">Status:</Text>
-                    <Text>{transaction.status}</Text>
-                  </Flex>
-                  {transaction.card?.cardNumber && (
-                    <Flex justifyContent="space-between">
-                      <Text opacity="50%">Card:</Text>
-                      <Flex gap={2} align="center">
-                        <Icon as={MastercardCard} />
-                        <Text>
-                          {transaction.card.cardNumber.slice(0, 2) +
-                            "••••••••" +
-                            transaction.card.cardNumber.slice(-4)}
-                        </Text>
-                      </Flex>
-                    </Flex>
-                  )}
+            <DetailGrid
+              details={[
+                {
+                  label: "Transaction ID",
+                  value: transaction.id,
+                },
+                {
+                  label: "Reference",
+                  value: transaction.reference,
+                },
+                {
+                  label: "Category",
+                  icon: (
+                    <IconoirIconProvider icon={transaction.category.iconName} />
+                  ),
+                  value: transaction.category.name,
+                },
+              ]}
+            />
 
-                  <Flex justifyContent="space-between">
-                    <Text opacity="50%">Balance:</Text>
-                    <Text>{transaction.balance.toFormat()}</Text>
-                  </Flex>
-                </Flex>
-              </GridItem>
+            <DetailGrid
+              details={[
+                {
+                  label: "Status",
+                  value: transaction.status,
+                },
+                {
+                  label: "Card",
+                  icon: <MastercardCard />,
+                  value: transaction.card?.cardNumber
+                    ? transaction.card.cardNumber.slice(0, 2) +
+                      "••••••••" +
+                      transaction.card.cardNumber.slice(-4)
+                    : "",
+                },
+                {
+                  label: "Balance",
+                  value: transaction.balance.toFormat(),
+                },
+              ]}
+            />
 
-              <GridItem colSpan={2} bg="white" borderRadius="md" p={6}>
-                <Flex direction="column" gap={3}>
-                  <Flex justifyContent="space-between">
-                    <Text opacity="50%">Download</Text>
-                    <IconButton
-                      aria-label="Download"
-                      icon={<Download />}
-                      variant="tertiary"
-                    />
-                  </Flex>
-                </Flex>
-              </GridItem>
-            </Grid>
+            <DetailGrid
+              details={[
+                {
+                  label: "Download",
+                  icon: <Download />,
+                },
+              ]}
+            />
           </Flex>
         </ModalBody>
       </ModalContent>
