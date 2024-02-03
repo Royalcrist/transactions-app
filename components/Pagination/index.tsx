@@ -14,12 +14,16 @@ const PaginationComponent: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
+  const handlePageChange = (page: number) => () => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    onPageChange(page);
+  };
   return (
     <HStack>
       {currentPage !== 1 && (
         <Button
-          size={"sm"}
-          onClick={() => onPageChange(currentPage - 1)}
+          size="xs"
+          onClick={handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           variant="tertiary"
         >
@@ -35,9 +39,9 @@ const PaginationComponent: React.FC<PaginationProps> = ({
             return (
               <Button
                 key={page}
-                size={"sm"}
+                size="xs"
                 variant="primary"
-                onClick={() => onPageChange(page)}
+                onClick={handlePageChange(page)}
               >
                 {page}
               </Button>
@@ -52,9 +56,9 @@ const PaginationComponent: React.FC<PaginationProps> = ({
             return (
               <Button
                 key={page}
-                size={"sm"}
+                size="xs"
                 variant="tertiary"
-                onClick={() => onPageChange(page)}
+                onClick={handlePageChange(page)}
               >
                 {page}
               </Button>
@@ -65,9 +69,9 @@ const PaginationComponent: React.FC<PaginationProps> = ({
             return (
               <Button
                 key={page}
-                size={"sm"}
+                size="xs"
                 variant="tertiary"
-                onClick={() => onPageChange(page)}
+                onClick={handlePageChange(page)}
               >
                 ...
               </Button>
@@ -79,8 +83,8 @@ const PaginationComponent: React.FC<PaginationProps> = ({
 
       {currentPage !== totalPages && (
         <Button
-          size={"sm"}
-          onClick={() => onPageChange(currentPage + 1)}
+          size="xs"
+          onClick={handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           variant="tertiary"
         >

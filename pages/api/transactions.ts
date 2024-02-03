@@ -5,7 +5,8 @@ import dayjs from "dayjs";
 
 // TODO: Optimise this code
 const TOTAL_ITEMS = 100;
-let initialBalance = 10000; // $10,000
+const initialBalance = faker.number.float({ min: 10000, max: 100000 });
+let balance = initialBalance;
 let currentDate = dayjs(
   faker.date.past({
     years: 2,
@@ -22,7 +23,15 @@ const allTransactions: Transaction[] = Array.from(
     );
     const isDebit = faker.datatype.boolean();
     const transactionAmount = isDebit ? -amountNumber : amountNumber;
-    initialBalance += transactionAmount;
+    const status = faker.helpers.arrayElement([
+      "Pending",
+      "Completed",
+      "Failed",
+    ]) as Transaction["status"];
+
+    if (status !== "Failed") {
+      balance += transactionAmount;
+    }
 
     let card: Transaction["card"] | undefined = undefined;
 
@@ -61,11 +70,11 @@ const allTransactions: Transaction[] = Array.from(
       createdAt: currentDate.toISOString(),
       updatedAt: updatedAt.toISOString(),
       reference: faker.finance.transactionDescription(),
-      status: faker.helpers.arrayElement(["Pending", "Completed", "Failed"]),
+      status: status,
       merchantName: faker.company.name(),
       amount: transactionAmount.toFixed(2),
       currency,
-      balance: initialBalance.toFixed(2),
+      balance: balance.toFixed(2),
       category:
         transactionAmount < 0
           ? {
@@ -98,14 +107,17 @@ const allTransactions: Transaction[] = Array.from(
               displayName: "Income",
               iconName: "MoneySquare",
             } as unknown as Transaction["category"]),
-      user: {
-        id: faker.number.int(),
-        name: faker.person.fullName(),
-      },
       card,
     };
   }
 );
+
+const user = {
+  id: faker.number.int(),
+  name: faker.person.fullName(),
+  balance: balance.toFixed(2),
+  currency: currency,
+};
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const page = parseInt(req.query.page as string) || 1;
@@ -156,8 +168,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     totalPages: totalPages,
     totalItems: TOTAL_ITEMS,
     data: {
-      balance: initialBalance.toFixed(2),
-      balanceCurrency: currency,
+      user,
       transactions,
     },
   });

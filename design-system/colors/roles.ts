@@ -37,7 +37,7 @@ const roles = {
   // Background
   background: {
     _dark: getColor("blue", 7),
-    default: getColor("gray", 100),
+    default: getColor("darkBlue", 95),
   },
   onBackground,
 
@@ -50,7 +50,7 @@ const roles = {
   },
 
   // Secondary
-  secondary: "transparent",
+  secondary: getColor("gray", 100),
   secondaryHover,
   onSecondary: onBackground,
   onSecondaryHover: onBackground,
@@ -92,7 +92,11 @@ const roles = {
     default: getColor("gray", 5),
   },
   onfield: onBackground,
-  overlay: getColor("gray", 20),
+  surface: {
+    _dark: getColor("blue", 10),
+    default: getColor("darkBlue", 100),
+  },
+  overlay: getColor("gray", 0, 0.7),
   outline: getColor("gray", 90),
   shadow: {
     _dark: getColor("gray", 100, 0.05),

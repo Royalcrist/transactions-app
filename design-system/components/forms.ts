@@ -36,8 +36,8 @@ const Button: ComponentStyleConfig = {
     secondary: {
       color: "onSecondary",
       bg: "secondary",
-      border: "1px solid",
-      borderColor: "onSecondary",
+      borderWidth: "1px",
+      borderColor: "outline",
       _hover: {
         color: "onSecondaryHover",
         bg: "secondaryHover",

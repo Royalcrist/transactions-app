@@ -9,6 +9,7 @@ export interface ColorPrimitives {
   red: ColorFunction;
   yellow: ColorFunction;
   blue: ColorFunction;
+  darkBlue: ColorFunction;
   green: ColorFunction;
   purple: ColorFunction;
   orange: ColorFunction;
@@ -34,6 +35,7 @@ const primitives: ColorPrimitives = {
   yellow: createHslBaseColor(47, 90),
   red: createHslBaseColor(0, 90),
   blue: createHslBaseColor(215, 90),
+  darkBlue: createHslBaseColor(215, 5),
   green: createHslBaseColor(140, 90),
   purple: createHslBaseColor(270, 90),
   orange: createHslBaseColor(35, 90),

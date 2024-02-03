@@ -45,30 +45,44 @@ export const TransactionsList: React.FC<TransactionsListProps> = ({
           currency: transaction.currency as Currency,
         }),
       });
-      acc[date].balance = acc[date].balance.add(
-        Dinero({
-          amount: parseInt(transaction.amount) * 100,
-          currency: transaction.currency as Currency,
-        })
-      );
+
+      if (transaction.status !== "Failed") {
+        acc[date].balance = acc[date].balance.add(
+          Dinero({
+            amount: parseInt(transaction.amount) * 100,
+            currency: transaction.currency as Currency,
+          })
+        );
+      }
 
       return acc;
     }, {} as TransactionsListByDate);
   }, [transactions]);
 
   return (
-    <VStack w="full" align="stretch" gap={6}>
+    <VStack w="full" gap={6}>
       {formattedTransactions &&
         Object.keys(formattedTransactions).map((date, index) => {
           const transactionsList = formattedTransactions[date].transactions;
           const balance = formattedTransactions[date].balance;
 
+          const getBalanceColor = () => {
+            if (balance.getAmount() === 0) {
+              return undefined;
+            }
+
+            if (balance.getAmount() > 0) {
+              return "#3E9C42";
+            }
+
+            return "#9A1111";
+          };
+
           return (
             <Box
               key={`transaction-date-${date}`}
               w="full"
-              // TODO: Change this to in the design system (surface)
-              backgroundColor="white"
+              backgroundColor="surface"
               borderRadius="xl"
               padding={4}
             >
@@ -78,8 +92,9 @@ export const TransactionsList: React.FC<TransactionsListProps> = ({
                 </Text>
                 <Text
                   textStyle="label"
-                  color={balance.getAmount() > 0 ? "#3E9C42" : "#9A1111"}
+                  color={getBalanceColor()}
                   paddingRight={12}
+                  opacity={balance.getAmount() === 0 ? "50%" : "100%"}
                 >
                   {balance.toFormat()}
                 </Text>

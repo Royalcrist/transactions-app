@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 import { useDisclosure } from "@chakra-ui/react";
 import { Dinero as IDinero } from "dinero.js";
 import IconoirIconProvider from "../IconoirIconProvider";
-import ModalDetail from "../ModalDetail";
+import TransactionModal from "../TransactionModal";
 
 export interface UITransaction extends Omit<Transaction, "amount" | "balance"> {
   balance: IDinero;
@@ -33,7 +33,6 @@ const TransactionComponent: React.FC<TransactionProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    // TODO: Hover effect
     <>
       <Box
         as="button"
@@ -41,6 +40,8 @@ const TransactionComponent: React.FC<TransactionProps> = ({
         onClick={onOpen}
         _focus={{ outline: "none" }}
         textAlign="left"
+        transition="background-color 0.2s"
+        _hover={{ bg: "tertiaryHover" }}
       >
         <Grid
           width="full"
@@ -66,8 +67,10 @@ const TransactionComponent: React.FC<TransactionProps> = ({
           </GridItem>
           <GridItem gridArea="details">
             <HStack spacing={2}>
+              {/* Not using padding due a bug in the chakra-ui that makes Icons sizes inconsistent */}
               <Flex
                 boxSize={8}
+                flexShrink={0}
                 borderWidth="1px"
                 borderColor="outline"
                 borderRadius="md"
@@ -81,9 +84,7 @@ const TransactionComponent: React.FC<TransactionProps> = ({
               </Flex>
 
               <VStack align="start" spacing={0}>
-                <Text maxW={240} noOfLines={1}>
-                  {transaction.reference}
-                </Text>
+                <Text noOfLines={1}>{transaction.reference}</Text>
                 <Text textStyle="body2" opacity="50%" noOfLines={1}>
                   {transaction.merchantName}
                 </Text>
@@ -98,6 +99,9 @@ const TransactionComponent: React.FC<TransactionProps> = ({
                     transaction.amount.getAmount() >= 0 ? "#3E9C42" : "#9A1111"
                   }
                   textStyle="label"
+                  textDecoration={
+                    transaction.status === "Failed" ? "line-through" : "none"
+                  }
                 >
                   {transaction.amount.toFormat()}
                 </Text>
@@ -111,7 +115,7 @@ const TransactionComponent: React.FC<TransactionProps> = ({
         </Grid>
       </Box>
 
-      <ModalDetail
+      <TransactionModal
         isOpen={isOpen}
         onClose={onClose}
         transaction={transaction}

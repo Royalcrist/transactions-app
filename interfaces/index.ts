@@ -1,8 +1,11 @@
+import { Currency } from "dinero.js";
 import { Iconoir } from "iconoir-react";
 
 export interface User {
   id: number;
   name: string;
+  balance: string;
+  currency: Currency;
 }
 export type IconName = keyof typeof Iconoir;
 
@@ -39,7 +42,6 @@ export interface Transaction {
   currency: string;
   balance: string;
   category: Category;
-  user: User;
   createdAt: string;
   updatedAt: string;
   card?: Card;
