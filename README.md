@@ -5,11 +5,11 @@ This is a simple transaction app that allows users to view transactions. It is b
 ## Table of Contents
 
 - [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
 - [API](#api)
   - [Endpoints](#endpoints)
 - [Frontend Optimizations](#frontend-optimizations)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
 
 ## Features
 
@@ -18,6 +18,30 @@ This is a simple transaction app that allows users to view transactions. It is b
 - Sort transactions by date and amount (ascending and descending)
 - Navigate through pages of transactions
 - Show balance and user information
+- Mock API made in Next.js API routes using Faker.js that simulates a real-world scenario
+
+## Prerequisites
+
+- Node.js (NVM is recommended for managing Node.js versions)
+- npm or yarn or pnpm
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/transations](http://localhost:3000/api/transations). This endpoint can be edited in `pages/api/transations.ts`.
+
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 ## API
 
@@ -83,31 +107,6 @@ The app uses Virtuoso and SWR to optimize rendering and fetching of data.
 
 - **Virtuoso:** It is used to render the list of transactions. It is a virtualized list component that only renders the items that are visible on the screen. This makes it efficient to render large lists of items.
 - **SWR:** It is used to fetch the transactions from the API. It is a React hook for data fetching that provides a number of features such as caching, revalidation, and error handling.
-
-## Prerequisites
-
-- Node.js (NVM is recommended for managing Node.js versions)
-- npm or yarn or pnpm
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/transations](http://localhost:3000/api/transations). This endpoint can be edited in `pages/api/transations.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 ## Thanks for reading! 🙏
 
