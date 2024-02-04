@@ -102,6 +102,7 @@ const TransactionComponent: React.FC<TransactionProps> = ({
                   textDecoration={
                     transaction.status === "Failed" ? "line-through" : "none"
                   }
+                  whiteSpace="nowrap"
                 >
                   {transaction.amount.toFormat()}
                 </Text>

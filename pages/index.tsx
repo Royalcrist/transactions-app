@@ -7,7 +7,9 @@
  * 5. [x] Max width text 50ch
  * 6. [x] Fix Layout for the modal
  * 7. [x] Button of sort by
- * 8. Add optimizations (VirtualizedList, cache, etc.)
+ * 8. [x] Add optimizations (VirtualizedList, cache, etc.)
+ * 8.1. Fix API giving transactions in the future
+ * 8.2. Add a timeout to the API to simulate a real request
  * 9. Clean up the code
  * 10. Documentations
  * 11. Add tests (unit at least for the hooks)
@@ -15,7 +17,6 @@
  * 13. Animations for the amounts
  */
 
-import TransactionsList from "@/components/TransactionsList";
 import {
   Avatar,
   Center,
@@ -30,102 +31,92 @@ import {
   MenuItemOption,
   MenuDivider,
   Button,
+  Spinner,
+  Grid,
+  GridItem,
+  Box,
 } from "@chakra-ui/react";
-import { Transaction, User } from "@/interfaces";
 import PaginationComponent from "@/components/Pagination";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Dinero, { Currency } from "dinero.js";
 import IconoirIconProvider from "@/components/IconoirIconProvider";
-
-interface GetTransactionsParams {
-  page?: number;
-  sortBy?: keyof Transaction;
-  sortOrder?: "asc" | "desc";
-}
-
-type PaginatedResponse<T> = {
-  currentPage: number;
-  pageSize: number;
-  totalPages: number;
-  totalItems: number;
-  data: T;
-};
-
-interface TransactionsResponse {
-  transactions: Transaction[];
-  user: User;
-}
-
-interface TransactionsService {
-  get: (
-    params?: GetTransactionsParams
-  ) => Promise<PaginatedResponse<TransactionsResponse>>;
-}
-
-const transactionsService: TransactionsService = {
-  get: async ({ page = 1, sortBy = "createdAt", sortOrder = "desc" } = {}) => {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      sortBy,
-      sortOrder,
-    });
-    const response = await fetch(`/api/transactions?${params}`);
-    return response.json();
-  },
-};
+import { useTransactions } from "@/hooks/useTransactions";
+import { GetTransactionsParams } from "@/services/transactionService";
+import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
+import dayjs from "dayjs";
+import TransactionComponent from "@/components/TransactionComponent";
+import useFormattedTransactions from "@/hooks/useFormattedTransactions";
 
 const TransactionsPage: React.FC = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [user, setUser] = useState<User | undefined>();
-  const [sortBy, setSortBy] = useState<keyof Transaction>("createdAt");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-
-  const setTransactionsState = (
-    response: PaginatedResponse<TransactionsResponse>
-  ) => {
-    setTransactions(response.data.transactions);
-    setCurrentPage(response.currentPage);
-    setTotalPages(response.totalPages);
-    setUser(response.data.user);
-  };
+  const {
+    transactions,
+    user,
+    isLoading,
+    error,
+    currentPage,
+    totalPages,
+    params,
+    goToPage,
+    sortChange,
+  } = useTransactions();
+  const formattedTransactions = useFormattedTransactions(transactions || []);
 
   useEffect(() => {
-    transactionsService.get().then(setTransactionsState);
-  }, []);
+    console.log("User", user);
+  }, [user]);
 
+  const ref = useRef<VirtuosoHandle>(null);
   const handlePageChange = useCallback(
     (page: number) => {
-      transactionsService.get({ page, sortBy, sortOrder }).then((response) => {
-        setTransactionsState(response);
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
+      goToPage(page);
+      ref.current?.scrollToIndex({ index: 0, behavior: "smooth" });
     },
-    [sortBy, sortOrder]
+    [goToPage, ref]
   );
 
-  const handleSortChange = (
-    sortBy: keyof Transaction,
-    sortOrder: "asc" | "desc"
-  ) => {
-    transactionsService.get({ sortBy, sortOrder }).then(setTransactionsState);
+  if (isLoading) {
+    return (
+      <Center height="100vh" width="full">
+        <Spinner size="xl" />
+      </Center>
+    );
+  }
 
-    setSortBy(sortBy);
-    setSortOrder(sortOrder);
-  };
+  if (error) {
+    return (
+      <Center height="100vh" width="full">
+        <Text>Error: {error.message}</Text>
+      </Center>
+    );
+  }
 
   return (
-    <Center bgColor="background" minH="100vh">
-      <VStack spacing={14} width="full" maxW={858} py={16}>
+    <Grid
+      bgColor="background"
+      width="full"
+      height="full"
+      minH="100vh"
+      p={8}
+      gap={12}
+      templateAreas='"header" "body"'
+      templateColumns="minmax(320px, 858px)"
+      templateRows="auto 1fr"
+      justifyContent="center"
+    >
+      <VStack
+        gridArea="header"
+        spacing={4}
+        width="full"
+        height="100%"
+        maxW={858}
+      >
         {user && (
           <HStack width="full" justify="space-between">
             <HStack spacing={4} alignItems="center" width="full">
               <Avatar name={user.name} />
               <Text textStyle="display">Hello {user.name}!</Text>
             </HStack>
-            {user.balance && (
+            {user?.balance != null && (
               <Text textStyle="title" whiteSpace="nowrap">
                 Balance:{" "}
                 {Dinero({
@@ -136,66 +127,141 @@ const TransactionsPage: React.FC = () => {
             )}
           </HStack>
         )}
+      </VStack>
+      {transactions && (
+        <Grid
+          gridArea="body"
+          templateAreas='"header" "transactions" "pagination"'
+          templateColumns="1fr"
+          templateRows="auto 1fr auto"
+          width="full"
+          gap={4}
+        >
+          <HStack width="full" justify="space-between" gridArea="header">
+            <Text textStyle="title" width="full">
+              Transactions
+            </Text>
+            <Menu closeOnSelect={false}>
+              <MenuButton
+                as={Button}
+                variant="secondary"
+                size="xs"
+                colorScheme="blue"
+                leftIcon={<IconoirIconProvider icon="Sort" />}
+              >
+                Sort
+              </MenuButton>
+              <MenuList minWidth="240px">
+                <MenuOptionGroup
+                  defaultValue={params.sortOrder}
+                  title="Order"
+                  type="radio"
+                  onChange={(value) => {
+                    sortChange({
+                      sortOrder: value as GetTransactionsParams["sortOrder"],
+                    });
+                  }}
+                >
+                  <MenuItemOption value="asc">Ascending</MenuItemOption>
+                  <MenuItemOption value="desc">Descending</MenuItemOption>
+                </MenuOptionGroup>
+                <MenuDivider />
+                <MenuOptionGroup
+                  defaultValue={params.sortBy}
+                  title="Sort by"
+                  type="radio"
+                  onChange={(value) => {
+                    sortChange({
+                      sortBy: value as GetTransactionsParams["sortBy"],
+                    });
+                  }}
+                >
+                  <MenuItemOption value="createdAt">Date</MenuItemOption>
+                  <MenuItemOption value="amount">Amount</MenuItemOption>
+                </MenuOptionGroup>
+              </MenuList>
+            </Menu>
+          </HStack>
 
-        {transactions && (
-          <VStack spacing={12}>
-            <VStack spacing={6} width="full">
-              <HStack width="full" justify="space-between">
-                <Text textStyle="title" width="full">
-                  Transactions
-                </Text>
+          <GridItem gridArea="transactions">
+            <Virtuoso
+              ref={ref}
+              style={{ width: "100%", height: "100%" }}
+              totalCount={formattedTransactions.length}
+              itemContent={(index) => {
+                const date = formattedTransactions[index].date;
+                const transactionsList =
+                  formattedTransactions[index].transactions;
+                const balance = formattedTransactions[index].balance;
 
-                <Menu closeOnSelect={false}>
-                  <MenuButton
-                    as={Button}
-                    variant="secondary"
-                    size="xs"
-                    colorScheme="blue"
-                    leftIcon={<IconoirIconProvider icon="Sort" />}
-                  >
-                    Sort
-                  </MenuButton>
-                  <MenuList minWidth="240px">
-                    <MenuOptionGroup
-                      defaultValue="desc"
-                      title="Order"
-                      type="radio"
-                      onChange={(value) => {
-                        handleSortChange(sortBy, value as "asc" | "desc");
-                      }}
+                const getBalanceColor = () => {
+                  if (balance.getAmount() === 0) {
+                    return undefined;
+                  }
+
+                  if (balance.getAmount() > 0) {
+                    return "#3E9C42";
+                  }
+
+                  return "#9A1111";
+                };
+
+                return (
+                  <>
+                    <Box
+                      key={`transaction-date-${date}`}
+                      w="full"
+                      backgroundColor="surface"
+                      borderRadius="xl"
+                      padding={4}
                     >
-                      <MenuItemOption value="asc">Ascending</MenuItemOption>
-                      <MenuItemOption value="desc">Descending</MenuItemOption>
-                    </MenuOptionGroup>
-                    <MenuDivider />
-                    <MenuOptionGroup
-                      defaultValue="createdAt"
-                      title="Sort by"
-                      type="radio"
-                      onChange={(value) => {
-                        handleSortChange(value as keyof Transaction, sortOrder);
-                      }}
-                    >
-                      <MenuItemOption value="createdAt">Date</MenuItemOption>
-                      <MenuItemOption value="amount">Amount</MenuItemOption>
-                    </MenuOptionGroup>
-                  </MenuList>
-                </Menu>
-              </HStack>
-              <TransactionsList transactions={transactions} />
-            </VStack>
+                      <HStack justifyContent="space-between" p={3}>
+                        <Text textStyle="label2" opacity="50%">
+                          {dayjs(date).format("dddd, D/MM/YYYY")}
+                        </Text>
+                        <Text
+                          textStyle="label"
+                          color={getBalanceColor()}
+                          paddingRight={12}
+                          opacity={balance.getAmount() === 0 ? "50%" : "100%"}
+                        >
+                          {balance.toFormat()}
+                        </Text>
+                      </HStack>
+                      {transactionsList.map((transaction, transactionIndex) => {
+                        return (
+                          <TransactionComponent
+                            key={`transaction-${transaction.id}`}
+                            transaction={transaction}
+                            isLast={
+                              transactionIndex === transactionsList.length - 1
+                            }
+                          />
+                        );
+                      })}
+                    </Box>
 
-            <Flex width="full" justify="center">
+                    {index !== formattedTransactions.length - 1 && (
+                      <Box boxSize={4} />
+                    )}
+                  </>
+                );
+              }}
+            />
+          </GridItem>
+
+          {currentPage && totalPages && (
+            <Flex gridArea="pagination" width="full" justify="center">
               <PaginationComponent
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
               />
             </Flex>
-          </VStack>
-        )}
-      </VStack>
-    </Center>
+          )}
+        </Grid>
+      )}
+    </Grid>
   );
 };
 

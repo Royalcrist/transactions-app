@@ -3,14 +3,13 @@ import { faker } from "@faker-js/faker";
 import { IconName, Transaction } from "@/interfaces"; // Ensure this path matches your project structure
 import dayjs from "dayjs";
 
-// TODO: Optimise this code
 const TOTAL_ITEMS = 100;
 const initialBalance = faker.number.float({ min: 10000, max: 100000 });
 let balance = initialBalance;
-let currentDate = dayjs(
-  faker.date.past({
-    years: 2,
-  })
+// Limit the start date to the current date to avoid future transactions
+let currentDate = dayjs().subtract(
+  faker.number.int({ min: 1, max: 720 }),
+  "hour"
 );
 const currency = faker.finance.currencyCode();
 
@@ -45,25 +44,29 @@ const allTransactions: Transaction[] = Array.from(
       };
     }
 
-    // Adjusting the logic to sometimes add hours instead of days
+    // Adjusting the logic to ensure no future dates are generated
     if (faker.datatype.boolean()) {
-      // 50% chance to add days (1 to 30 days)
-      currentDate = currentDate.add(
+      currentDate = currentDate.subtract(
         faker.number.int({ min: 1, max: 30 }),
         "day"
       );
     } else {
-      // 50% chance to add hours within the same day (1 to 23 hours)
-      currentDate = currentDate.add(
+      currentDate = currentDate.subtract(
         faker.number.int({ min: 1, max: 23 }),
         "hour"
       );
     }
 
-    const updatedAt = currentDate.add(
+    let updatedAt = currentDate.add(
       faker.number.int({ min: 1, max: 72 }),
       "hour"
     );
+
+    // Ensure updatedAt is not in the future
+    const now = dayjs();
+    if (updatedAt.isAfter(now)) {
+      updatedAt = now;
+    }
 
     return {
       id: id,
@@ -119,7 +122,16 @@ const user = {
   currency: currency,
 };
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+// Function to simulate response delay
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+const RESPONSE_DELAY_MS = 500; // Set the desired delay in milliseconds
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  await delay(RESPONSE_DELAY_MS); // Apply delay
+
   const page = parseInt(req.query.page as string) || 1;
   const pageSize = parseInt(req.query.pageSize as string) || 10;
   const sortBy = req.query.sortBy as
@@ -131,13 +143,17 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   let transactionsToSort = [...allTransactions];
 
-  // Ensure sorting logic for dates is correctly applied
   if (sortBy && sortOrder) {
     transactionsToSort = transactionsToSort.sort((a, b) => {
       if (sortBy === "createdAt" || sortBy === "updatedAt") {
         const dateA = dayjs(a[sortBy]);
         const dateB = dayjs(b[sortBy]);
         return sortOrder === "asc" ? dateA.diff(dateB) : dateB.diff(dateA);
+      } else if (sortBy === "amount") {
+        // Specific case for sorting by amount
+        const amountA = parseFloat(a.amount);
+        const amountB = parseFloat(b.amount);
+        return sortOrder === "asc" ? amountA - amountB : amountB - amountA;
       } else if (
         typeof a[sortBy] === "number" &&
         typeof b[sortBy] === "number"
@@ -149,9 +165,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         typeof a[sortBy] === "string" &&
         typeof b[sortBy] === "string"
       ) {
+        const aValue = a[sortBy]?.toString() ?? "";
+        const bValue = b[sortBy]?.toString() ?? "";
         return sortOrder === "asc"
-          ? (a[sortBy] as string).localeCompare(b[sortBy] as string)
-          : (b[sortBy] as string).localeCompare(a[sortBy] as string);
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
       }
       return 0;
     });
@@ -164,8 +182,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   res.status(200).json({
     currentPage: page,
-    pageSize: pageSize,
-    totalPages: totalPages,
+    pageSize,
+    totalPages,
     totalItems: TOTAL_ITEMS,
     data: {
       user,
