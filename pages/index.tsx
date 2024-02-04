@@ -83,16 +83,18 @@ const TransactionsPage: React.FC = () => {
             <Text textStyle="title" width="full">
               Transactions
             </Text>
-            <SortingMenu
-              sortBy={params.sortBy}
-              sortOrder={params.sortOrder}
-              onSortOrderChange={(sortOrder) => {
-                sortChange({ sortOrder });
-              }}
-              onSortByChange={(sortBy) => {
-                sortChange({ sortBy });
-              }}
-            />
+            {params?.sortBy && params?.sortOrder && (
+              <SortingMenu
+                sortBy={params.sortBy}
+                sortOrder={params.sortOrder}
+                onSortOrderChange={(sortOrder) => {
+                  sortChange({ sortOrder });
+                }}
+                onSortByChange={(sortBy) => {
+                  sortChange({ sortBy });
+                }}
+              />
+            )}
           </HStack>
 
           <GridItem gridArea="transactions">

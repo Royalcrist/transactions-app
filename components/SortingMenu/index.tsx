@@ -9,13 +9,13 @@ import {
   type MenuProps,
 } from "@chakra-ui/react";
 import IconoirIconProvider from "../IconoirIconProvider";
-import { GetTransactionsParams } from "@/services/transactionService";
+import { SortBy, SortOrder } from "@/interfaces";
 
 export interface SortingMenuProps extends Omit<MenuProps, "children"> {
-  sortBy: GetTransactionsParams["sortBy"];
-  sortOrder: GetTransactionsParams["sortOrder"];
-  onSortOrderChange?: (sortOrder: GetTransactionsParams["sortOrder"]) => void;
-  onSortByChange?: (sortBy: GetTransactionsParams["sortBy"]) => void;
+  sortBy: SortBy;
+  sortOrder: SortOrder;
+  onSortOrderChange?: (sortOrder: SortOrder) => void;
+  onSortByChange?: (sortBy: SortBy) => void;
 }
 
 const SortingMenu = ({
@@ -42,7 +42,7 @@ const SortingMenu = ({
           title="Order"
           type="radio"
           onChange={(value) => {
-            onSortOrderChange?.(value as GetTransactionsParams["sortOrder"]);
+            onSortOrderChange?.(value as SortOrder);
           }}
         >
           <MenuItemOption value="asc">Ascending</MenuItemOption>
@@ -54,7 +54,7 @@ const SortingMenu = ({
           title="Sort by"
           type="radio"
           onChange={(value) => {
-            onSortByChange?.(value as GetTransactionsParams["sortBy"]);
+            onSortByChange?.(value as SortBy);
           }}
         >
           <MenuItemOption value="createdAt">Date</MenuItemOption>
