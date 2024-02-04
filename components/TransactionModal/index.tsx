@@ -67,14 +67,6 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
         return acc;
       }, [] as DetailGridProps["details"]),
     },
-    {
-      details: [
-        {
-          label: "Download",
-          valueIcon: "Download" as IconName,
-        },
-      ],
-    },
   ];
 
   return (

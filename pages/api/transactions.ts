@@ -3,7 +3,8 @@ import { faker } from "@faker-js/faker";
 import { IconName, Transaction } from "@/interfaces"; // Ensure this path matches your project structure
 import dayjs from "dayjs";
 
-const TOTAL_ITEMS = 100;
+const TOTAL_ITEMS = 1000;
+const PAGE_SIZE = 100;
 const initialBalance = faker.number.float({ min: 10000, max: 100000 });
 let balance = initialBalance;
 // Limit the start date to the current date to avoid future transactions
@@ -133,7 +134,7 @@ export default async function handler(
   await delay(RESPONSE_DELAY_MS); // Apply delay
 
   const page = parseInt(req.query.page as string) || 1;
-  const pageSize = parseInt(req.query.pageSize as string) || 10;
+  const pageSize = parseInt(req.query.pageSize as string) || PAGE_SIZE;
   const sortBy = req.query.sortBy as
     | keyof Transaction
     | "createdAt"
