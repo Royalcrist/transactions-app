@@ -1,4 +1,4 @@
-# Transaction App
+# Transactions App
 
 This is a simple transaction app that allows users to view transactions. It is built using Next.js, TypeScript, Chakra UI, and Virtuoso + SWR for optimized rendering and fetching of data.
 
