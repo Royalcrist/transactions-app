@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { faker } from "@faker-js/faker";
-import { IconName, Transaction } from "@/interfaces"; // Ensure this path matches your project structure
+import type { Transaction } from "@/interfaces"; // Ensure this path matches your project structure
 import dayjs from "dayjs";
 
 const TOTAL_ITEMS = 1000;
@@ -104,7 +104,7 @@ const allTransactions: Transaction[] = Array.from(
                 "Hanger",
                 "Safe",
                 "Calculator",
-              ]) as IconName,
+              ]),
             }
           : ({
               name: "income",

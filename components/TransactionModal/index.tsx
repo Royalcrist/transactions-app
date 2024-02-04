@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Flex,
   Modal,
@@ -6,14 +5,14 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
+  type ModalProps,
   Text,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { UITransaction } from "../TransactionComponent";
 import DetailGrid, { DetailGridProps } from "../DetailGrid";
-import { IconName } from "@/interfaces";
+import type { UITransaction } from "@/interfaces";
 
-interface TransactionModalProps {
+export interface TransactionModalProps extends Omit<ModalProps, "children"> {
   isOpen: boolean;
   onClose: () => void;
   transaction: UITransaction;
@@ -23,6 +22,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   isOpen,
   onClose,
   transaction,
+  ...props
 }) => {
   const detailGroups: DetailGridProps[] = [
     {
@@ -54,7 +54,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
             /(?<=.{2}).(?=.{4})/g,
             "*"
           ),
-          valueIcon: "MastercardCard" as IconName,
+          valueIcon: "MastercardCard",
         },
         {
           label: "Balance",
@@ -70,7 +70,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   ];
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl" {...props}>
       <ModalOverlay bg="overlay" />
       <ModalContent>
         <ModalCloseButton />

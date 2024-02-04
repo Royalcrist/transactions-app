@@ -1,26 +1,6 @@
-import type { Transaction, User } from "@/interfaces";
-
-export interface GetTransactionsParams {
-  page?: number;
-  sortBy?: keyof Transaction;
-  sortOrder?: "asc" | "desc";
-}
-
-export type PaginatedResponse<T> = {
-  currentPage: number;
-  pageSize: number;
-  totalPages: number;
-  totalItems: number;
-  data: T;
-};
-
-export type TransactionsResponse = PaginatedResponse<{
-  user: User;
-  transactions: Transaction[];
-}>;
-
+import type { PaginationParams, TransactionsResponse } from "@/interfaces";
 export interface TransactionsService {
-  get: (params?: GetTransactionsParams) => Promise<TransactionsResponse>;
+  get: (params?: PaginationParams) => Promise<TransactionsResponse>;
 }
 
 const transactionsService: TransactionsService = {

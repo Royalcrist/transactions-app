@@ -1,19 +1,25 @@
-import React, { ReactNode } from "react";
-import { Box, Flex, Grid, GridItem, Text, VStack } from "@chakra-ui/react";
-import { IconName } from "@/interfaces";
+import {
+  Box,
+  type BoxProps,
+  Flex,
+  Grid,
+  GridItem,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import IconoirIconProvider from "../IconoirIconProvider";
 
-export interface DetailGridProps {
+export interface DetailGridProps extends Omit<BoxProps, "children"> {
   details: {
     label: string;
     value?: any;
-    valueIcon?: IconName;
+    valueIcon?: string;
   }[];
 }
 
-const DetailGrid = ({ details }: DetailGridProps) => {
+const DetailGrid = ({ details, ...props }: DetailGridProps) => {
   return (
-    <Box bg="surface" borderRadius="md" p={6}>
+    <Box bg="surface" borderRadius="md" p={6} {...props}>
       <VStack gap={3}>
         {details.map((detail, index) => (
           <Grid

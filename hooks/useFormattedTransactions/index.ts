@@ -1,9 +1,7 @@
 import dayjs from "dayjs";
 import { useMemo } from "react";
-import { Currency } from "dinero.js";
-import { Transaction } from "@/interfaces";
-import Dinero, { Dinero as IDinero } from "dinero.js";
-import { UITransaction } from "@/components/TransactionComponent";
+import type { Transaction, UITransaction } from "@/interfaces";
+import Dinero, { type Dinero as IDinero, type Currency } from "dinero.js";
 
 interface TransactionsListByDate {
   [key: string]: {

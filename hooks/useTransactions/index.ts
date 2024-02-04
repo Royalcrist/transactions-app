@@ -1,12 +1,15 @@
-import transactionsService, {
-  TransactionsResponse,
-  type GetTransactionsParams,
-} from "@/services/transactionService";
+import transactionsService from "@/services/transactionService";
 import useSWR from "swr";
 import { useState, useCallback } from "react";
+import type {
+  PaginationParams,
+  SortBy,
+  SortOrder,
+  TransactionsResponse,
+} from "@/interfaces";
 
-export function useTransactions(initialParams: GetTransactionsParams = {}) {
-  const [params, setParams] = useState<GetTransactionsParams>({
+export function useTransactions(initialParams: PaginationParams = {}) {
+  const [params, setParams] = useState<PaginationParams>({
     ...initialParams,
     page: initialParams.page || 1,
     sortBy: initialParams.sortBy || "createdAt",
@@ -32,13 +35,7 @@ export function useTransactions(initialParams: GetTransactionsParams = {}) {
   }, []);
 
   const sortChange = useCallback(
-    ({
-      sortBy,
-      sortOrder,
-    }: {
-      sortBy?: GetTransactionsParams["sortBy"];
-      sortOrder?: GetTransactionsParams["sortOrder"];
-    }) => {
+    ({ sortBy, sortOrder }: { sortBy?: SortBy; sortOrder?: SortOrder }) => {
       if (!sortBy && !sortOrder) {
         throw new Error("Either sortBy or sortOrder are required");
       }

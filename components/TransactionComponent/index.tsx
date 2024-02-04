@@ -7,33 +7,26 @@ import {
   Grid,
   GridItem,
   Box,
+  type BoxProps,
 } from "@chakra-ui/react";
-import { Transaction } from "@/interfaces";
+import type { UITransaction } from "@/interfaces";
 import { ArrowRight } from "iconoir-react";
 import dayjs from "dayjs";
 import { useDisclosure } from "@chakra-ui/react";
-import { Dinero as IDinero } from "dinero.js";
 import IconoirIconProvider from "../IconoirIconProvider";
 import TransactionModal from "../TransactionModal";
+import { memo } from "react";
 
-export interface UITransaction extends Omit<Transaction, "amount" | "balance"> {
-  balance: IDinero;
-  amount: IDinero;
-}
-
-export interface TransactionProps {
+export interface TransactionProps extends BoxProps {
   transaction: UITransaction;
   isLast: boolean;
 }
 
-const TransactionComponent: React.FC<TransactionProps> = ({
-  transaction,
-  isLast,
-}) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const TransactionComponent: React.FC<TransactionProps> = memo(
+  ({ transaction, isLast, ...props }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-  return (
-    <>
+    return (
       <Box
         as="button"
         width="full"
@@ -42,6 +35,8 @@ const TransactionComponent: React.FC<TransactionProps> = ({
         textAlign="left"
         transition="background-color 0.2s"
         _hover={{ bg: "tertiaryHover" }}
+        _active={{ bg: "tertiaryActive" }}
+        {...props}
       >
         <Grid
           width="full"
@@ -114,15 +109,16 @@ const TransactionComponent: React.FC<TransactionProps> = ({
             </HStack>
           </GridItem>
         </Grid>
+        <TransactionModal
+          isOpen={isOpen}
+          onClose={onClose}
+          transaction={transaction}
+        />
       </Box>
+    );
+  }
+);
 
-      <TransactionModal
-        isOpen={isOpen}
-        onClose={onClose}
-        transaction={transaction}
-      />
-    </>
-  );
-};
+TransactionComponent.displayName = "TransactionComponent";
 
 export default TransactionComponent;
