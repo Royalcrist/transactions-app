@@ -16,6 +16,7 @@ const buttonSizes = ["sm", "md", "lg"].reduce(
 const Button: ComponentStyleConfig = {
   baseStyle: {
     borderRadius: "lg",
+    textStyle: "button",
   },
   sizes: {
     ...buttonSizes,

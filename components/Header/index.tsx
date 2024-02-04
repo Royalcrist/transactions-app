@@ -5,6 +5,7 @@ import {
   type StackProps,
   Text,
   VStack,
+  Box,
 } from "@chakra-ui/react";
 import Dinero, { type Currency } from "dinero.js";
 import { memo } from "react";
@@ -21,8 +22,23 @@ const Header = memo(({ user, ...props }: HeaderProps) => {
           <Avatar name={user.name} />
           <Text textStyle="display">Hello {user.name}!</Text>
         </HStack>
-        <Text textStyle="title" whiteSpace="nowrap">
-          Balance:{" "}
+        <Text
+          textStyle="label"
+          whiteSpace="nowrap"
+          padding={4}
+          borderRadius="md"
+          backgroundColor="secondary"
+          color="onSecondary"
+        >
+          <Box
+            as="span"
+            aria-label="balance"
+            role="img"
+            marginRight={2}
+            opacity={0.5}
+          >
+            Balance:{" "}
+          </Box>
           {Dinero({
             amount: Number(user.balance) * 100,
             currency: user.currency as Currency,

@@ -41,9 +41,9 @@ const TransactionComponent: React.FC<TransactionProps> = memo(
         <Grid
           width="full"
           templateAreas='"time id details amount-status"'
-          templateColumns="1fr 1fr 3fr 1.5fr"
+          templateColumns="1fr .8fr 3fr 1.5fr"
           templateRows="1fr"
-          gap={12}
+          gap={8}
           borderBottomWidth={isLast ? "0px" : "1px"}
           borderColor="outline"
           p={3}
@@ -55,13 +55,17 @@ const TransactionComponent: React.FC<TransactionProps> = memo(
             </Text>
           </GridItem>
           <GridItem gridArea="id">
-            <Text>
-              <span style={{ opacity: 0.5 }}>ID:</span>
-              {transaction.id}
+            <Text whiteSpace="nowrap">
+              <Box as="span" opacity={0.5}>
+                ID:{" "}
+              </Box>
+              <Box as="span" opacity={1}>
+                {transaction.id}
+              </Box>
             </Text>
           </GridItem>
           <GridItem gridArea="details">
-            <HStack spacing={2}>
+            <HStack spacing={3}>
               {/* Not using padding due a bug in the chakra-ui that makes Icons sizes inconsistent */}
               <Flex
                 boxSize={8}
@@ -78,7 +82,7 @@ const TransactionComponent: React.FC<TransactionProps> = memo(
                 />
               </Flex>
 
-              <VStack align="start" spacing={0}>
+              <VStack align="start" spacing={2}>
                 <Text noOfLines={1}>{transaction.reference}</Text>
                 <Text textStyle="body2" opacity="50%" noOfLines={1}>
                   {transaction.merchantName}
@@ -88,12 +92,11 @@ const TransactionComponent: React.FC<TransactionProps> = memo(
           </GridItem>
           <GridItem gridArea="amount-status">
             <HStack spacing={8} justify="end">
-              <VStack align="end">
+              <VStack align="end" spacing={2}>
                 <Text
                   color={
                     transaction.amount.getAmount() >= 0 ? "#3E9C42" : "#9A1111"
                   }
-                  textStyle="label"
                   textDecoration={
                     transaction.status === "Failed" ? "line-through" : "none"
                   }

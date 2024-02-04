@@ -1,42 +1,49 @@
 import { ChakraTheme } from "@chakra-ui/react";
 
-const textStylesGeneral = {
+const body = {
+  fontWeight: "normal",
+  lineHeight: "base",
+};
+
+const title = {
   fontWeight: "semibold",
   lineHeight: "shorter",
-  color: "onBackground",
 };
 
 const textStyles: ChakraTheme["textStyles"] = {
   display: {
-    ...textStylesGeneral,
-    fontSize: "32px",
+    ...title,
+    fontSize: "2rem",
   },
 
   title: {
-    ...textStylesGeneral,
-    fontSize: "24px",
+    ...title,
+    fontSize: "1.5rem",
   },
 
   label: {
-    ...textStylesGeneral,
+    ...title,
     lineHeight: "base",
     fontWeight: "semibold",
   },
 
   label2: {
-    ...textStylesGeneral,
-    fontSize: "14px",
+    ...title,
+    fontSize: "0.875rem",
     fontWeight: "semibold",
   },
 
   body: {
-    ...textStylesGeneral,
-    fontSize: "16px",
+    ...body,
   },
   body2: {
-    ...textStylesGeneral,
-    fontSize: "14px",
-    fontWeight: "regular",
+    ...body,
+    fontSize: "0.875rem",
+  },
+
+  button: {
+    ...body,
+    fontWeight: "medium",
   },
 };
 
