@@ -40,7 +40,7 @@ const Header = memo(({ user, ...props }: HeaderProps) => {
             Balance:{" "}
           </Box>
           {Dinero({
-            amount: Number(user.balance) * 100,
+            amount: parseInt(user.balance) * 100,
             currency: user.currency as Currency,
           }).toFormat()}
         </Text>
